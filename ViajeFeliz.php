@@ -84,7 +84,7 @@ class ViajeFeliz {
         for($i = 0; $i < count($this->pasajeros); $i++){
             $cadena = $cadena . "Pasajero en el asiento " . $i+1 . ": \nNombre: " . $this->pasajeros[$i]["nombre"] . " " . $this->pasajeros[$i]["apellido"] . ".\nDNI: " . $this->pasajeros[$i]["documento"] . ".\n";
         }
-        return "\nVuelo " . $this->getCodigo() . ".\nDestino: " . $this->getDestino() . ".\nPasajeros:\n" . $cadena;
+        return "\nVuelo " . $this->getCodigo() . ".\nDestino: " . $this->getDestino() . "\nCantidad maxima de pasajeros: " . $this->getMaxPasajeros() . ".\nPasajeros:\n" . $cadena;
     }
 }
 
