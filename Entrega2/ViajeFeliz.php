@@ -1,19 +1,23 @@
 <?php
 
-class ViajeFeliz {
+class ViajeFeliz
+{
 
     //Atributos de la clase
     private $codigo;
     private $destino;
     private $maxPasajeros;
     private $pasajeros;
+    private $responsableV;
 
     //Metodo constructor
-    public function __construct($pCod, $pDestino, $pMaxPasajeros, $aPasajeros){
+    public function __construct($pCod, $pDestino, $pMaxPasajeros, $aPasajeros, $pResponsableV)
+    {
         $this->codigo = $pCod;
         $this->destino = $pDestino;
         $this->maxPasajeros = $pMaxPasajeros;
         $this->pasajeros = $aPasajeros;
+        $this->responsableV = $pResponsableV;
     }
 
     //Metodos observadores
@@ -22,7 +26,8 @@ class ViajeFeliz {
      * Metodo que retorna el codigo del vuelo
      * @return string
      */
-    public function getCodigo(){
+    public function getCodigo()
+    {
         return $this->codigo;
     }
 
@@ -30,7 +35,8 @@ class ViajeFeliz {
      * Metodo que retorna el destino del vuelo
      * @return string
      */
-    public function getDestino(){
+    public function getDestino()
+    {
         return $this->destino;
     }
 
@@ -38,16 +44,27 @@ class ViajeFeliz {
      * Metodo que retorna el maximo de pasajeros del avion
      * @return int
      */
-    public function getMaxPasajeros(){
+    public function getMaxPasajeros()
+    {
         return $this->maxPasajeros;
     }
 
     /**
-     * Metodo que retorna los pasajeros del vuelo
-     * @return string
+     * Metodo que retorna la coleccion de los pasajeros del vuelo
+     * @return array
      */
-    public function getPasajeros(){
+    public function getPasajeros()
+    {
         return $this->pasajeros;
+    }
+
+    /**
+     * Metodo que retorna el responsable del vuelo
+     * @return object
+     */
+    public function getResponsableV()
+    {
+        return $this->responsableV;
     }
 
     //Metodos Modificadores
@@ -57,7 +74,8 @@ class ViajeFeliz {
      * Metodo que modifica el destino del vuelo
      * @param string $pDestino
      */
-    public function setDestino ($pDestino){
+    public function setDestino($pDestino)
+    {
         $this->destino = $pDestino;
     }
 
@@ -65,27 +83,36 @@ class ViajeFeliz {
      * Metodo que modifica el maximo de pasajeros del avion
      * @param int $pMax
      */
-    public function setMaxPasajeros ($pMax){
+    public function setMaxPasajeros($pMax)
+    {
         $this->maxPasajeros = $pMax;
     }
 
     /**
-     * Metodo que modifica un pasajero en un asiento del avion
-     * @param int $asientoPasajero
+     * Metodo que modifica el arreglo de los pasajeros del avion
+     * @param array $asientoPasajero
      */
-    public function setPasajeros($aPasajeros){
+    public function setPasajeros($aPasajeros)
+    {
         $this->pasajeros = $aPasajeros;
+    }
+
+    /**
+     * Metodo que modifica al responsable del vuelo
+     * @param ResponsableV $pResp
+     */
+    public function setResponsable($pResponsable){
+        $this->responsableV = $pResponsable;
     }
 
     //Metodo toString
 
-    public function __toString(){
+    public function __toString()
+    {
         $cadena = "";
-        for($i = 0; $i < count($this->pasajeros); $i++){
-            $cadena = $cadena . "Pasajero en el asiento " . $i+1 . ": \nNombre: " . $this->pasajeros[$i]["nombre"] . " " . $this->pasajeros[$i]["apellido"] . ".\nDNI: " . $this->pasajeros[$i]["documento"] . ".\n";
+        for ($i = 0; $i < count($this->pasajeros); $i++) {
+            $cadena = $cadena . "Pasajero en el asiento " . $i+1 . ": \nNombre: " . $this->pasajeros[$i]->getNombre() . " " . $this->pasajeros[$i]->getApellido(). ".\nDNI: " . $this->pasajeros[$i]->getDni() . ".\nTelefono: " . $this->pasajeros[$i]->getTelefono() . ".\n";
         }
-        return "\nVuelo " . $this->getCodigo() . ".\nDestino: " . $this->getDestino() . "\nCantidad maxima de pasajeros: " . $this->getMaxPasajeros() . ".\nPasajeros:\n" . $cadena;
+        return "\nVuelo " . $this->getCodigo() . ".\nDestino: " . $this->getDestino() . "\nCantidad maxima de pasajeros: " . $this->getMaxPasajeros() . ".\nResponsable del vuelo: " . $this->getResponsableV() . "\nPasajeros:\n" . $cadena;
     }
 }
-
-?>

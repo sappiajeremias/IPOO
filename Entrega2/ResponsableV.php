@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 //el número de empleado, número de licencia, nombre y apellido.
 
-class ResponsableV {
-
+class ResponsableV
+{
     private $nroEmpleado;
     private $nroLicencia;
     private $nombre;
@@ -11,7 +11,8 @@ class ResponsableV {
 
     //Metodo constructor
 
-    public function __construct($pNroE, $pNroL, $pNombre, $pApellido){
+    public function __construct($pNroE, $pNroL, $pNombre, $pApellido)
+    {
         $this->nroEmpleado = $pNroE;
         $this->nroLicencia = $pNroL;
         $this->nombre = $pNombre;
@@ -24,7 +25,8 @@ class ResponsableV {
      * Metodo que retorna el numero de empleado
      * @return int
      */
-    public function getNroEmpleado (){
+    public function getNroEmpleado()
+    {
         return $this->nroEmpleado;
     }
 
@@ -32,7 +34,8 @@ class ResponsableV {
      * Metodo que retorna el numero de licencia
      * @return int
      */
-    public function getNroLicencia (){
+    public function getNroLicencia()
+    {
         return $this->nroLicencia;
     }
 
@@ -40,7 +43,8 @@ class ResponsableV {
      * Metodo que retorna el nombre
      * @return string
      */
-    public function getNombre (){
+    public function getNombre()
+    {
         return $this->nombre;
     }
 
@@ -48,7 +52,8 @@ class ResponsableV {
      * Metodo que retorna el numero de empleado
      * @return string
      */
-    public function getApellido (){
+    public function getApellido()
+    {
         return $this->apellido;
     }
 
@@ -58,15 +63,26 @@ class ResponsableV {
      * Metodo que modifica el numero de empleado
      * @param int $pNroE
      */
-    public function setNroEmp ($pNroE){
+    public function setNroEmp($pNroE)
+    {
         $this->nroEmpleado = $pNroE;
+    }
+
+    /**
+     * Metodo que modifica el numero de licencia
+     * @param int $pNroL
+     */
+    public function setNroLic($pNroL)
+    {
+        $this->nroLicencia = $pNroL;
     }
 
     /**
      * Metodo que modifica el nombre
      * @param string $pNombre
      */
-    public function setNombre($pNombre){
+    public function setNombre($pNombre)
+    {
         $this->nombre = $pNombre;
     }
 
@@ -74,7 +90,15 @@ class ResponsableV {
      * Metodo que modifica el apellido
      * @param string $pApellido
      */
-    public function setApellido($pApellido){
+    public function setApellido($pApellido)
+    {
         $this->nombre = $pApellido;
+    }
+
+    //Metodo toString
+
+    public function __toString()
+    {
+        return "\nNombre y apellido: " . $this->getNombre() . " " . $this->getApellido() . ".\nNumero de empleado: " . $this->nroEmpleado . ".\nNumero de licencia: " . $this->getNroLicencia() . ".\n";
     }
 }

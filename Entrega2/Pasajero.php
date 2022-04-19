@@ -74,6 +74,14 @@ class Pasajero {
     }
 
     /**
+     * Metodo que modifica el dni en caso de ser mal ingresado
+     * @param int $pDni
+     */
+    public function setDni ($pDni) {
+        $this->dni = $pDni;
+    }
+
+    /**
      * Metodo que modifica el telefono
      * @param int $pTelefono
      */
@@ -84,6 +92,6 @@ class Pasajero {
     //Metodo toString
 
     public function __toString(){
-        echo "\nNombre y apellido: " . $this->getNombre() . " " . $this->getApellido() . "\nDNI: " . $this->getDni() . "\nTelefono: " . $this->telefono . ".\n";
+        return "\nNombre y apellido: " . $this->getNombre() . " " . $this->getApellido() . ".\nDNI: " . $this->getDni() . ".\nTelefono: " . $this->telefono . ".\n";
     }
 }

@@ -1,9 +1,11 @@
 <?php
 include "ViajeFeliz.php";
+include "Pasajero.php";
+include "ResponsableV.php";
 
 /**
  * Modulo para crear un nuevo viaje desde 0
- * @return $vuelo
+ * @return ViajeFeliz
  */
 function crearVueloNuevo()
 {
@@ -14,7 +16,8 @@ function crearVueloNuevo()
     echo "Ingrese la cantidad maxima de pasajeros del vuelo: ";
     $max = trim(fgets(STDIN));
     $arregloPasajeros = crearArregloPasajeros($max);
-    $vuelo = new ViajeFeliz($cod, $dest, $max, $arregloPasajeros);
+    $responsable = crearResponsable();
+    $vuelo = new ViajeFeliz($cod, $dest, $max, $arregloPasajeros, $responsable);
     return $vuelo;
 }
 
@@ -29,17 +32,36 @@ function crearArregloPasajeros($maximo)
     for ($i = 0; $i < $cant; $i++) {
         echo "\nIngrese el nombre del pasajero en el asiento " . $i+1 . ": ";
         $pNombre = trim(fgets(STDIN));
-        echo "\nIngrese el apellido del pasajero en el asiento " . $i+1 . ": ";
+        echo "Ingrese el apellido del pasajero en el asiento " . $i+1 . ": ";
         $pApellido = trim(fgets(STDIN));
-        echo "\nIngrese el documento del pasajero en el asiento " . $i+1 . ": ";
+        echo "Ingrese el documento del pasajero en el asiento " . $i+1 . ": ";
         $pDocumento = trim(fgets(STDIN));
+        echo "Ingrese el telefono del pasajero en el asiento " . $i+1 . ": ";
+        $pTelefono = trim(fgets(STDIN));
 
         //Asignamos los datos al asiento ingresado por parametro
-        $arregloPasajeros[$i]["nombre"] = $pNombre;
-        $arregloPasajeros[$i]["apellido"] = $pApellido;
-        $arregloPasajeros[$i]["documento"] = $pDocumento;
+        $pasajeroNuevo = new Pasajero($pNombre, $pApellido, $pDocumento, $pTelefono);
+        $arregloPasajeros[$i] = $pasajeroNuevo;
     }
     return $arregloPasajeros;
+}
+
+/**
+ * Modulo que crea un responsable para el vuelo
+ * @return ResponsableV
+ */
+function crearResponsable()
+{
+    echo "\nPor favor ingrese el nombre del responsable del vuelo: ";
+    $pNombre = trim(fgets(STDIN));
+    echo "Luego, ingrese su apellido: ";
+    $pApellido = trim(fgets(STDIN));
+    echo "Ahora ingrese el numero de licencia: ";
+    $pNroLic = trim(fgets(STDIN));
+    echo "Y por ultimo, ingrese el numero de empleado: ";
+    $pNroEmp = trim(fgets(STDIN));
+    $pResponsable = new ResponsableV($pNroEmp, $pNroLic, $pNombre, $pApellido);
+    return $pResponsable;
 }
 
 /**
@@ -77,14 +99,17 @@ function agregarPasajero($vuelo)
         $pNombre = trim(fgets(STDIN));
         echo "Luego ingrese el apellido: " ;
         $pApellido = trim(fgets(STDIN));
-        echo "Por ultimo, ingrese el documento: ";
+        echo "Ahora, ingrese el documento: ";
         $pDocumento = trim(fgets(STDIN));
+        echo "Por ultimo, ingrese el telefono del pasajero: ";
+        $pTelefono = trim(fgets(STDIN));
 
         //Asignamos los datos al ultimo asiento
-        $pasajeros[count($pasajeros)] = ["nombre" => $pNombre, "apellido" => $pApellido, "documento" => $pDocumento];
+        $pasajeroNuevo = new Pasajero($pNombre, $pApellido, $pDocumento, $pTelefono);
+        $pasajeros[count($pasajeros)] = $pasajeroNuevo;
 
         //Devolvemos el arreglo a la clase para que lo modifique
-    $vuelo->setPasajeros($pasajeros);
+        $vuelo->setPasajeros($pasajeros);
     }
 }
 
@@ -93,8 +118,9 @@ function agregarPasajero($vuelo)
  * @param VueloFeliz $vuelo
  * @return boolean
  */
-function verificaVueloCompleto($vuelo){
-    if(count($vuelo->getPasajeros()) == $vuelo->getMaxPasajeros()){
+function verificaVueloCompleto($vuelo)
+{
+    if (count($vuelo->getPasajeros()) == $vuelo->getMaxPasajeros()) {
         echo "\nEl vuelo se encuentra completo, debe aumentar la cantidad maxima de pasajeros.";
         $verif = false;
     } else {
@@ -109,23 +135,23 @@ function verificaVueloCompleto($vuelo){
  */
 function modificarPasajero($vuelo)
 {
-    $pasajerosNuevo = $vuelo->getPasajeros();
+    $pasajeros = $vuelo->getPasajeros();
     $asiento = verificarAsientoMod($vuelo);
     //Pedimos los datos del nuevo pasajero
     echo "\nIngrese el nombre del nuevo pasajero: ";
     $pNombre = trim(fgets(STDIN));
     echo "Luego ingrese el apellido: ";
     $pApellido = trim(fgets(STDIN));
-    echo "Por ultimo, ingrese el documento: ";
+    echo "Ahora, ingrese el documento: ";
     $pDocumento = trim(fgets(STDIN));
+    echo "Por ultimo, ingrese el telefono: ";
+    $pTelefono = trim(fgets(STDIN));
 
     //Asignamos los datos al asiento ingresado por parametro
-    $pasajerosNuevo[$asiento - 1]["nombre"] = $pNombre;
-    $pasajerosNuevo[$asiento - 1]["apellido"] = $pApellido;
-    $pasajerosNuevo[$asiento - 1]["documento"] = $pDocumento;
-
+    $pasajeroNuevo = new Pasajero($pNombre, $pApellido, $pDocumento, $pTelefono);
+    $pasajeros[$asiento - 1] = $pasajeroNuevo;
     //Devolvemos el arreglo a la clase para que lo modifique
-    $vuelo->setPasajeros($pasajerosNuevo);
+    $vuelo->setPasajeros($pasajeros);
 }
 
 /**
@@ -154,12 +180,13 @@ function verificarAsientoMod($vuelo)
  * @param VueloFeliz $vuelo
  * @return int
  */
-function verificarNuevoMax($vuelo){
+function verificarNuevoMax($vuelo)
+{
     //boolean $seguir
     $seguir = true;
     while ($seguir) {
         echo "\nIngrese la nueva cantidad maxima de pasajeros del vuelo: ";
-            $nuevoMax = trim(fgets(STDIN));
+        $nuevoMax = trim(fgets(STDIN));
         if ($nuevoMax >= count($vuelo->getPasajeros())) {
             $seguir = false;
         } else {
@@ -167,6 +194,24 @@ function verificarNuevoMax($vuelo){
         }
     }
     return $nuevoMax;
+}
+
+/**
+ * Modulo que crea un nuevo responsable y modifica al del vuelo
+ * @param ViajeFeliz $vuelo
+ */
+function modificarResponsable ($vuelo){
+    echo "\nPor favor ingrese el nombre del nuevo responsable del vuelo: ";
+    $pNombre = trim(fgets(STDIN));
+    echo "Luego, ingrese su apellido: ";
+    $pApellido = trim(fgets(STDIN));
+    echo "Ahora ingrese el numero de licencia: ";
+    $pNroLic = trim(fgets(STDIN));
+    echo "Y por ultimo, ingrese el numero de empleado: ";
+    $pNroEmp = trim(fgets(STDIN));
+    $pResponsable = new ResponsableV($pNroEmp, $pNroLic, $pNombre, $pApellido);
+
+    $vuelo->setResponsable($pResponsable);
 }
 
 
@@ -185,7 +230,8 @@ do {
     3. Mostrar los datos del vuelo.\n
     4. Modificar el destino del vuelo.\n
     5. Modificar la cantidad maxima de pasajeros.\n
-    6. Salir.\n
+    6. Modificar el responsable del vuelo. \n
+    7. Salir.\n
     Opcion: ";
     $opcion = trim(fgets(STDIN));
 
@@ -213,7 +259,11 @@ do {
             $vuelo->setMaxPasajeros($nuevoMax);
             break;
         }
-        case 6: {
+        case 6:{
+            modificarResponsable($vuelo);
+            break;
+        }
+        case 7: {
             echo "\nGracias por usar nuestro servicio!\n";
             $seguir = false;
             break;
