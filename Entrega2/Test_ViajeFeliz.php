@@ -4,6 +4,21 @@ include "Pasajero.php";
 include "ResponsableV.php";
 
 /**
+ * Modulo para crear un viaje hecho previamente
+ * @return ViajeFeliz
+ */
+function crearPredeterminado(){
+    $colecPersonas[0] = new Pasajero("Jeremias","Sappia",4546454, 299654646);
+    $colecPersonas[1] = new Pasajero("Lionel","Messi",2565655, 299456544);
+    $colecPersonas[2] = new Pasajero("Julian","Alvarez",4245645, 2991123132);
+    $colecPersonas[3] = new Pasajero("Gonzalo","Montiel",3824645, 297456465);
+    $colecPersonas[4] = new Pasajero("Matias","Suarez",2402353, 294565623);
+    $responsable = new ResponsableV(145, 456789787, "Lionel", "Scaloni");
+    $vueloP = new ViajeFeliz(2223, "Qatar", 50, $colecPersonas, $responsable);
+    return $vueloP;
+}
+
+/**
  * Modulo para crear un nuevo viaje desde 0
  * @return ViajeFeliz
  */
@@ -219,51 +234,60 @@ function modificarResponsable ($vuelo){
  * PROGRAMA PRINCIPAL
  */
 
-$vuelo = crearVueloNuevo();
 //boolean $seguir
 $seguir = true;
 
 do {
     echo "\n*****************************************   MENU   *****************************************\n
-    1. Agregar un pasajero.\n
-    2. Modificar un pasajero del vuelo.\n
-    3. Mostrar los datos del vuelo.\n
-    4. Modificar el destino del vuelo.\n
-    5. Modificar la cantidad maxima de pasajeros.\n
-    6. Modificar el responsable del vuelo. \n
-    7. Salir.\n
+    1. Crear vuelo nuevo.\n
+    2. Usar vuelo con valores predeterminados.\n
+    3. Agregar un pasajero.\n
+    4. Modificar un pasajero del vuelo.\n
+    5. Mostrar los datos del vuelo.\n
+    6. Modificar el destino del vuelo.\n
+    7. Modificar la cantidad maxima de pasajeros.\n
+    8. Modificar el responsable del vuelo. \n
+    9. Salir.\n
     Opcion: ";
     $opcion = trim(fgets(STDIN));
 
     switch ($opcion) {
-        case 1: {
-            agregarPasajero($vuelo);
+        case 1:{
+            $vuelo = crearVueloNuevo();
             break;
         }
-        case 2: {
-            modificarPasajero($vuelo);
+        case 2:{
+            $vuelo = crearPredeterminado();
             break;
         }
         case 3: {
-            echo $vuelo;
+            agregarPasajero($vuelo);
             break;
         }
         case 4: {
+            modificarPasajero($vuelo);
+            break;
+        }
+        case 5: {
+            echo $vuelo;
+            break;
+        }
+        case 6: {
             echo "\nIngrese el nuevo destino del vuelo: ";
             $nuevoDest = trim(fgets(STDIN));
             $vuelo->setDestino($nuevoDest);
             break;
         }
-        case 5: {
+        case 7: {
             $nuevoMax = verificarNuevoMax($vuelo);
             $vuelo->setMaxPasajeros($nuevoMax);
             break;
         }
-        case 6:{
+        case 8:{
             modificarResponsable($vuelo);
             break;
         }
-        case 7: {
+        case 9: {
             echo "\nGracias por usar nuestro servicio!\n";
             $seguir = false;
             break;
