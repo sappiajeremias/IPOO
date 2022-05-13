@@ -1,5 +1,6 @@
 <?php
-include "ViajeFeliz.php";
+include "ViajeTerrestre.php";
+include "ViajeAereo.php";
 include "Pasajero.php";
 include "ResponsableV.php";
 
@@ -7,12 +8,13 @@ include "ResponsableV.php";
  * Modulo para crear un viaje hecho previamente
  * @return ViajeFeliz
  */
-function crearPredeterminado(){
-    $colecPersonas[0] = new Pasajero("Jeremias","Sappia",4546454, 299654646);
-    $colecPersonas[1] = new Pasajero("Lionel","Messi",2565655, 299456544);
-    $colecPersonas[2] = new Pasajero("Julian","Alvarez",4245645, 2991123132);
-    $colecPersonas[3] = new Pasajero("Gonzalo","Montiel",3824645, 297456465);
-    $colecPersonas[4] = new Pasajero("Matias","Suarez",2402353, 294565623);
+function crearPredeterminado()
+{
+    $colecPersonas[0] = new Pasajero("Jeremias", "Sappia", 4546454, 299654646);
+    $colecPersonas[1] = new Pasajero("Lionel", "Messi", 2565655, 299456544);
+    $colecPersonas[2] = new Pasajero("Julian", "Alvarez", 4245645, 2991123132);
+    $colecPersonas[3] = new Pasajero("Gonzalo", "Montiel", 3824645, 297456465);
+    $colecPersonas[4] = new Pasajero("Matias", "Suarez", 2402353, 294565623);
     $responsable = new ResponsableV(145, 456789787, "Lionel", "Scaloni");
     $vueloP = new ViajeFeliz(2223, "Qatar", 50, $colecPersonas, $responsable);
     return $vueloP;
@@ -100,10 +102,10 @@ function verificarNumero($max)
     return $cantPasajeros;
 }
 
-/**
+/*
  * Modulo que agrega un nuevo pasajero al vuelo
  * @param VueloFeliz $vuelo
- */
+
 function agregarPasajero($vuelo)
 {
     if (verificaVueloCompleto($vuelo)) {
@@ -128,11 +130,11 @@ function agregarPasajero($vuelo)
     }
 }
 
-/**
+
  * Modulo que verifica si se puede agregar un nuevo pasajero
  * @param VueloFeliz $vuelo
  * @return boolean
- */
+
 function verificaVueloCompleto($vuelo)
 {
     if (count($vuelo->getPasajeros()) == $vuelo->getMaxPasajeros()) {
@@ -142,7 +144,8 @@ function verificaVueloCompleto($vuelo)
         $verif = true;
     }
     return $verif;
-}
+} 
+*/
 
 /**
  * Modulo que pide el arreglo de pasajeros y modifica los datos de uno de ellos
@@ -215,7 +218,8 @@ function verificarNuevoMax($vuelo)
  * Modulo que crea un nuevo responsable y modifica al del vuelo
  * @param ViajeFeliz $vuelo
  */
-function modificarResponsable ($vuelo){
+function modificarResponsable($vuelo)
+{
     echo "\nPor favor ingrese el nombre del nuevo responsable del vuelo: ";
     $pNombre = trim(fgets(STDIN));
     echo "Luego, ingrese su apellido: ";
@@ -229,6 +233,35 @@ function modificarResponsable ($vuelo){
     $vuelo->setResponsable($pResponsable);
 }
 
+/**
+ * Modulo que se encarga de crear y retornar un pasajero nuevo
+ * @return Pasajero
+ */
+function crearPasajero(){
+    //Pedimos los datos del nuevo pasajero
+    echo "\nIngrese el nombre del nuevo pasajero: ";
+    $pNombre = trim(fgets(STDIN));
+    echo "Luego ingrese el apellido: " ;
+    $pApellido = trim(fgets(STDIN));
+    echo "Ahora, ingrese el documento: ";
+    $pDocumento = trim(fgets(STDIN));
+    echo "Por ultimo, ingrese el telefono del pasajero: ";
+    $pTelefono = trim(fgets(STDIN));
+
+    //Asignamos los datos al ultimo asiento
+    $pasajeroNuevo = new Pasajero($pNombre, $pApellido, $pDocumento, $pTelefono);
+    
+    return $pasajeroNuevo;
+}
+
+/**
+ * Modulo que se encarga de vender un pasaje 
+ * @param Pasajero $pPasajero
+ * @param Viaje $pViaje
+ * @return double
+ */
+
+
 
 /**
  * PROGRAMA PRINCIPAL
@@ -241,7 +274,7 @@ do {
     echo "\n*****************************************   MENU   *****************************************\n
     1. Crear vuelo nuevo.\n
     2. Usar vuelo con valores predeterminados.\n
-    3. Agregar un pasajero.\n
+    3. Vender pasajes.\n
     4. Modificar un pasajero del vuelo.\n
     5. Mostrar los datos del vuelo.\n
     6. Modificar el destino del vuelo.\n
@@ -261,9 +294,16 @@ do {
             break;
         }
         case 3: {
-            agregarPasajero($vuelo);
+            //Primero verificamos si el viaje se encuentra lleno
+            if($vuelo->hayPasajesDisponible()){
+                //En caso de tener lugar, pedimos los datos del pasajero
+                $pPasajero = crearPasajero();
+            } else {
+                //Si el vuelo esta lleno, lo notificamos
+                echo "\nEl viaje esta lleno.";
+            }
             break;
-        }
+        } 
         case 4: {
             modificarPasajero($vuelo);
             break;

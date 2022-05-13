@@ -160,4 +160,26 @@ class ViajeFeliz
             return "\nVuelo " . $this->getCodigo() . ".\nDestino: " . $this->getDestino() . "\nCantidad maxima de pasajeros: " . $this->getMaxPasajeros() . ".\nResponsable del vuelo: " . $this->getResponsableV() . ".\nEl importe del viaje es de: " . $this->getImporte() . ".\nEl viaje es solo de ida.\n Pasajeros:\n" . $cadena;
         }
     }
+
+    //Metodos propios
+
+    /**
+    * Modulo que verifica si se puede agregar un nuevo pasajero
+    * @return boolean
+    */
+    public function hayPasajesDisponibles()
+    {
+        if (count($this->getPasajeros()) < $this->getMaxPasajeros()) {
+            $verif = true;
+            echo "\nQuedan " . ( $this->getMaxPasajeros() - count($this->getPasajeros()) ) . " asientos disponibles.";
+        } else {
+            // echo "\nEl vuelo se encuentra lleno.";
+            $verif = false;
+        }
+        return $verif;
+    }
+
+
+
+
 }
