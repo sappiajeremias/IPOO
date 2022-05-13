@@ -1,14 +1,15 @@
 <?php
+
 include "ViajeTerrestre.php";
 include "ViajeAereo.php";
 include "Pasajero.php";
 include "ResponsableV.php";
 
 /**
- * Modulo para crear un viaje hecho previamente
- * @return ViajeFeliz
+ * Modulo para crear un viaje aereo hecho previamente
+ * @return Aereo
  */
-function crearPredeterminado()
+function crearPredeterminadoAereo()
 {
     $colecPersonas[0] = new Pasajero("Jeremias", "Sappia", 4546454, 299654646);
     $colecPersonas[1] = new Pasajero("Lionel", "Messi", 2565655, 299456544);
@@ -16,13 +17,59 @@ function crearPredeterminado()
     $colecPersonas[3] = new Pasajero("Gonzalo", "Montiel", 3824645, 297456465);
     $colecPersonas[4] = new Pasajero("Matias", "Suarez", 2402353, 294565623);
     $responsable = new ResponsableV(145, 456789787, "Lionel", "Scaloni");
-    $vueloP = new ViajeFeliz(2223, "Qatar", 50, $colecPersonas, $responsable);
+    $vueloP = new Aereo(123, "Qatar", 50, $colecPersonas, $responsable, 12500, true, 44756, "Primera Clase", "Qatar Airways", 0);
     return $vueloP;
 }
 
 /**
- * Modulo para crear un nuevo viaje desde 0
- * @return ViajeFeliz
+ * Modulo para crear un viaje terrestre hecho previamente
+ * @return Terrestre
+ */
+function crearPredeterminadoTerrestre()
+{
+    $colecPersonas[0] = new Pasajero("Jeremias", "Sappia", 4546454, 299654646);
+    $colecPersonas[1] = new Pasajero("Lionel", "Messi", 2565655, 299456544);
+    $colecPersonas[2] = new Pasajero("Julian", "Alvarez", 4245645, 2991123132);
+    $colecPersonas[3] = new Pasajero("Gonzalo", "Montiel", 3824645, 297456465);
+    $colecPersonas[4] = new Pasajero("Matias", "Suarez", 2402353, 294565623);
+    $responsable = new ResponsableV(145, 456789787, "Lionel", "Scaloni");
+    $viaje1T = new Terrestre(1234, "Rio de Janeiro", 45, $colecPersonas, $responsable, 10500, true, "Cama");
+    return $viaje1T;
+}
+
+/**
+ * Modulo que se encarga de decidir que viaje crear predeterminado
+ * @return ViajeFeliz 
+ */
+function crearViajePre(){
+    echo "\nIngrese 'Aereo' o 'Terrestre' según corresponda: ";
+    $tipo = trim(fgets(STDIN));
+    if($tipo == "Aereo"){
+        $viaje1 = crearPredeterminadoAereo();
+    } else {
+        $viaje1 = crearPredeterminadoTerrestre();
+    }
+    return $viaje1;
+}
+
+/**
+ * Modulo que se encarga de decidir que viaje crear
+ * @return ViajeFeliz 
+ */
+function crearViaje(){
+    echo "\nIngrese 'Aereo' o 'Terrestre' según corresponda: ";
+    $tipo = trim(fgets(STDIN));
+    if($tipo == "Aereo"){
+        $viaje1 = crearVueloNuevo();
+    } else {
+        $viaje1 = crearTerrestreNuevo();
+    }
+    return $viaje1;
+}
+
+/**
+ * Modulo para crear un nuevo viaje aereo desde 0
+ * @return Aereo
  */
 function crearVueloNuevo()
 {
@@ -32,35 +79,60 @@ function crearVueloNuevo()
     $dest = trim(fgets(STDIN));
     echo "Ingrese la cantidad maxima de pasajeros del vuelo: ";
     $max = trim(fgets(STDIN));
-    $arregloPasajeros = crearArregloPasajeros($max);
+    echo "Ingrese el importe del viaje: ";
+    $pImporte = trim(fgets(STDIN));
+    echo "Ingrese 1(Si el viaje es ida y vuelta), sino, ingrese otro numero: ";
+    $pIYV = trim(fgets(STDIN));
+    echo "Ingrese 'Primera Clase' o 'Clase Turista': ";
+    $pClase = trim(fgets(STDIN));
+    echo "Ingrese el numero de vuelo: ";
+    $pNroVuelo = trim(fgets(STDIN));
+    echo "Ingrese el nombre de la aerolinea: ";
+    $pNombre = trim(fgets(STDIN));
+    echo "Ingrese la cantidad de escalas del vuelo: ";
+    $pEscalas = trim(fgets(STDIN));
+
+    $arregloPasajeros = [];
     $responsable = crearResponsable();
-    $vuelo = new ViajeFeliz($cod, $dest, $max, $arregloPasajeros, $responsable);
+
+    if ($pIYV == 1) {
+        $vuelo = new Aereo($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, true, $pNroVuelo, $pClase, $pNombre, $pEscalas);
+    } else {
+        $vuelo = new Aereo($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, false, $pNroVuelo, $pClase, $pNombre, $pEscalas);
+    }
+
     return $vuelo;
 }
 
 /**
- * Modulo que crea y retorna un arreglo de pasajeros
- * @param int $maximo
- * @return array
+ * Modulo para crear un nuevo viaje terrestre desde 0
+ * @return Terrestre
  */
-function crearArregloPasajeros($maximo)
+function crearTerrestreNuevo()
 {
-    $cant = verificarNumero($maximo);
-    for ($i = 0; $i < $cant; $i++) {
-        echo "\nIngrese el nombre del pasajero en el asiento " . $i+1 . ": ";
-        $pNombre = trim(fgets(STDIN));
-        echo "Ingrese el apellido del pasajero en el asiento " . $i+1 . ": ";
-        $pApellido = trim(fgets(STDIN));
-        echo "Ingrese el documento del pasajero en el asiento " . $i+1 . ": ";
-        $pDocumento = trim(fgets(STDIN));
-        echo "Ingrese el telefono del pasajero en el asiento " . $i+1 . ": ";
-        $pTelefono = trim(fgets(STDIN));
+    echo "\nIngrese el codigo del viaje: ";
+    $cod = trim(fgets(STDIN));
+    echo "Luego, ingrese el destino del viaje: ";
+    $dest = trim(fgets(STDIN));
+    echo "Ingrese la cantidad maxima de pasajeros del viaje: ";
+    $max = trim(fgets(STDIN));
+    echo "Ingrese el importe del viaje: ";
+    $pImporte = trim(fgets(STDIN));
+    echo "Ingrese 1(Si el viaje es ida y vuelta), sino, ingrese otro numero: ";
+    $pIYV = trim(fgets(STDIN));
+    echo "Ingrese 'Coche Cama' o 'Semi Cama': ";
+    $pClase = trim(fgets(STDIN));
 
-        //Asignamos los datos al asiento ingresado por parametro
-        $pasajeroNuevo = new Pasajero($pNombre, $pApellido, $pDocumento, $pTelefono);
-        $arregloPasajeros[$i] = $pasajeroNuevo;
+    $arregloPasajeros = [];
+    $responsable = crearResponsable();
+
+    if ($pIYV == 1) {
+        $terrestre = new Terrestre($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, true, $pClase);
+    } else {
+        $terrestre = new Terrestre($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, false, $pClase);
     }
-    return $arregloPasajeros;
+
+    return $terrestre;
 }
 
 /**
@@ -69,7 +141,7 @@ function crearArregloPasajeros($maximo)
  */
 function crearResponsable()
 {
-    echo "\nPor favor ingrese el nombre del responsable del vuelo: ";
+    echo "\nPor favor ingrese el nombre del responsable del viaje: ";
     $pNombre = trim(fgets(STDIN));
     echo "Luego, ingrese su apellido: ";
     $pApellido = trim(fgets(STDIN));
@@ -96,56 +168,29 @@ function verificarNumero($max)
         if ($cantPasajeros > 0 && $cantPasajeros <= $max) {
             $seguir = false;
         } else {
-            echo "\nSu cantidad de pasajeros no se encuentra entre la cantidad del vuelo, intente de nuevo.";
+            echo "\nSu cantidad de pasajeros no se encuentra entre la cantidad del viaje, intente de nuevo.";
         }
     }
     return $cantPasajeros;
 }
 
-/*
- * Modulo que agrega un nuevo pasajero al vuelo
- * @param VueloFeliz $vuelo
-
-function agregarPasajero($vuelo)
-{
-    if (verificaVueloCompleto($vuelo)) {
-        $pasajeros = $vuelo->getPasajeros();
-    
-        //Pedimos los datos del nuevo pasajero
-        echo "\nIngrese el nombre del nuevo pasajero: ";
-        $pNombre = trim(fgets(STDIN));
-        echo "Luego ingrese el apellido: " ;
-        $pApellido = trim(fgets(STDIN));
-        echo "Ahora, ingrese el documento: ";
-        $pDocumento = trim(fgets(STDIN));
-        echo "Por ultimo, ingrese el telefono del pasajero: ";
-        $pTelefono = trim(fgets(STDIN));
-
-        //Asignamos los datos al ultimo asiento
-        $pasajeroNuevo = new Pasajero($pNombre, $pApellido, $pDocumento, $pTelefono);
-        $pasajeros[count($pasajeros)] = $pasajeroNuevo;
-
-        //Devolvemos el arreglo a la clase para que lo modifique
-        $vuelo->setPasajeros($pasajeros);
-    }
-}
-
-
+/**
  * Modulo que verifica si se puede agregar un nuevo pasajero
  * @param VueloFeliz $vuelo
  * @return boolean
+*/
 
 function verificaVueloCompleto($vuelo)
 {
     if (count($vuelo->getPasajeros()) == $vuelo->getMaxPasajeros()) {
-        echo "\nEl vuelo se encuentra completo, debe aumentar la cantidad maxima de pasajeros.";
+        echo "\nEl viaje se encuentra completo, debe aumentar la cantidad maxima de pasajeros.";
         $verif = false;
     } else {
         $verif = true;
     }
     return $verif;
-} 
-*/
+}
+
 
 /**
  * Modulo que pide el arreglo de pasajeros y modifica los datos de uno de ellos
@@ -203,7 +248,7 @@ function verificarNuevoMax($vuelo)
     //boolean $seguir
     $seguir = true;
     while ($seguir) {
-        echo "\nIngrese la nueva cantidad maxima de pasajeros del vuelo: ";
+        echo "\nIngrese la nueva cantidad maxima de pasajeros del viaje: ";
         $nuevoMax = trim(fgets(STDIN));
         if ($nuevoMax >= count($vuelo->getPasajeros())) {
             $seguir = false;
@@ -220,7 +265,7 @@ function verificarNuevoMax($vuelo)
  */
 function modificarResponsable($vuelo)
 {
-    echo "\nPor favor ingrese el nombre del nuevo responsable del vuelo: ";
+    echo "\nPor favor ingrese el nombre del nuevo responsable del viaje: ";
     $pNombre = trim(fgets(STDIN));
     echo "Luego, ingrese su apellido: ";
     $pApellido = trim(fgets(STDIN));
@@ -237,7 +282,8 @@ function modificarResponsable($vuelo)
  * Modulo que se encarga de crear y retornar un pasajero nuevo
  * @return Pasajero
  */
-function crearPasajero(){
+function crearPasajero()
+{
     //Pedimos los datos del nuevo pasajero
     echo "\nIngrese el nombre del nuevo pasajero: ";
     $pNombre = trim(fgets(STDIN));
@@ -254,14 +300,6 @@ function crearPasajero(){
     return $pasajeroNuevo;
 }
 
-/**
- * Modulo que se encarga de vender un pasaje 
- * @param Pasajero $pPasajero
- * @param Viaje $pViaje
- * @return double
- */
-
-
 
 /**
  * PROGRAMA PRINCIPAL
@@ -272,59 +310,60 @@ $seguir = true;
 
 do {
     echo "\n*****************************************   MENU   *****************************************\n
-    1. Crear vuelo nuevo.\n
-    2. Usar vuelo con valores predeterminados.\n
+    1. Crear viaje nuevo.\n
+    2. Usar viaje con valores predeterminados.\n
     3. Vender pasajes.\n
-    4. Modificar un pasajero del vuelo.\n
-    5. Mostrar los datos del vuelo.\n
-    6. Modificar el destino del vuelo.\n
+    4. Modificar un pasajero del viaje.\n
+    5. Mostrar los datos del viaje.\n
+    6. Modificar el destino del viaje.\n
     7. Modificar la cantidad maxima de pasajeros.\n
-    8. Modificar el responsable del vuelo. \n
+    8. Modificar el responsable del viaje. \n
     9. Salir.\n
     Opcion: ";
     $opcion = trim(fgets(STDIN));
 
     switch ($opcion) {
         case 1:{
-            $vuelo = crearVueloNuevo();
+            $viaje1 = crearViaje();
             break;
         }
         case 2:{
-            $vuelo = crearPredeterminado();
+            $viaje1 = crearViajePre();
             break;
         }
         case 3: {
             //Primero verificamos si el viaje se encuentra lleno
-            if($vuelo->hayPasajesDisponible()){
+            if ($viaje1->hayPasajesDisponibles()) {
                 //En caso de tener lugar, pedimos los datos del pasajero
                 $pPasajero = crearPasajero();
+                $viaje1->venderPasaje($pPasajero);
             } else {
                 //Si el vuelo esta lleno, lo notificamos
                 echo "\nEl viaje esta lleno.";
             }
             break;
-        } 
+        }
         case 4: {
-            modificarPasajero($vuelo);
+            modificarPasajero($viaje1);
             break;
         }
         case 5: {
-            echo $vuelo;
+            echo $viaje1;
             break;
         }
         case 6: {
-            echo "\nIngrese el nuevo destino del vuelo: ";
+            echo "\nIngrese el nuevo destino del viaje: ";
             $nuevoDest = trim(fgets(STDIN));
-            $vuelo->setDestino($nuevoDest);
+            $viaje1->setDestino($nuevoDest);
             break;
         }
         case 7: {
-            $nuevoMax = verificarNuevoMax($vuelo);
-            $vuelo->setMaxPasajeros($nuevoMax);
+            $nuevoMax = verificarNuevoMax($viaje1);
+            $viaje1->setMaxPasajeros($nuevoMax);
             break;
         }
         case 8:{
-            modificarResponsable($vuelo);
+            modificarResponsable($viaje1);
             break;
         }
         case 9: {

@@ -1,6 +1,6 @@
 <?php
 
-class ViajeFeliz
+class Viaje
 {
 
     //Atributos de la clase
