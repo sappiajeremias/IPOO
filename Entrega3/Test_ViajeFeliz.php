@@ -325,10 +325,12 @@ do {
     switch ($opcion) {
         case 1:{
             $viaje1 = crearViaje();
+            $viaje1->actualizarImporte();
             break;
         }
         case 2:{
             $viaje1 = crearViajePre();
+            $viaje1->actualizarImporte();
             break;
         }
         case 3: {
@@ -337,9 +339,6 @@ do {
                 //En caso de tener lugar, pedimos los datos del pasajero
                 $pPasajero = crearPasajero();
                 $viaje1->venderPasaje($pPasajero);
-            } else {
-                //Si el vuelo esta lleno, lo notificamos
-                echo "\nEl viaje esta lleno.";
             }
             break;
         }

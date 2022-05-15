@@ -173,7 +173,7 @@ class Viaje
             $verif = true;
             echo "\nQuedan " . ( $this->getMaxPasajeros() - count($this->getPasajeros()) ) . " asientos disponibles.";
         } else {
-            // echo "\nEl vuelo se encuentra lleno.";
+            echo "\nEl vuelo se encuentra lleno.";
             $verif = false;
         }
         return $verif;

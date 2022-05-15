@@ -46,21 +46,32 @@ class Terrestre extends Viaje
     */
     public function venderPasaje($aPasajero)
     {
-        $importe = $this->getImporte();
-        if (($this->getComodidad() == "Coche Cama")) {
-            if ($this->getIdaYVuelta()) {
-                $importe = $importe * 1.25;
-            } else {
-                $importe = $importe * 1.75;
-            }
-        } elseif ($this->getIdaYVuelta()) {
-            $importe = $importe * 1.50;
-        }
-    
+        echo "\nEl importe final del viaje es de: " . $this->getImporte() . ".\n";
+
         $pasajeros = $this->getPasajeros();
         $pasajeros[count($pasajeros)] = $aPasajero;
         $this->setPasajeros($pasajeros);
 
-        return $importe;
+        return $this->getImporte();
+    }
+
+    /**
+     * Modulo que se encarga de actualizar el precio del viaje
+     */
+    public function actualizarImporte()
+    {
+        $importe = $this->getImporte();
+        if (($this->getComodidad() == "Coche Cama")) {
+            if ($this->getIdaYVuelta()) {
+                $importe = $importe * 1.75;
+            } else {
+                $importe = $importe * 1.25;
+            }
+        } elseif ($this->getIdaYVuelta()) {
+            $importe = $importe * 1.50;
+        }
+
+        echo "\nEl importe final del pasaje es " . $importe ;
+        $this->setImporte($importe);
     }
 }

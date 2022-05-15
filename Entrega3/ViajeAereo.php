@@ -83,6 +83,20 @@ class Aereo extends Viaje
     */
     public function venderPasaje($aPasajero)
     {
+        echo "\nEl importe final del viaje es de: " . $this->getImporte() . ".\n";
+
+        $pasajeros = $this->getPasajeros();
+        $pasajeros[count($pasajeros)] = $aPasajero;
+        $this->setPasajeros($pasajeros);
+
+        return $this->getImporte();
+    }
+
+    /**
+     * Modulo que se encarga de actualizar el precio del viaje
+     */
+    public function actualizarImporte()
+    {
         $importe = $this->getImporte();
         if (($this->getCategoriaAsiento() == "Primera Clase") && $this->getEscalas() == 0) {
             if ($this->getIdaYVuelta()) {
@@ -100,10 +114,8 @@ class Aereo extends Viaje
             $importe = $importe * 1.50;
         }
     
-        $pasajeros = $this->getPasajeros();
-        $pasajeros[count($pasajeros)] = $aPasajero;
-        $this->setPasajeros($pasajeros);
+        echo "\nEl importe final del pasaje es " . $importe ;
 
-        return $importe;
+        $this->setImporte($importe);
     }
 }
