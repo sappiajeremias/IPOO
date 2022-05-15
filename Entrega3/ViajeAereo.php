@@ -118,4 +118,28 @@ class Aereo extends Viaje
 
         $this->setImporte($importe);
     }
+
+    /**
+    * Modulo que se encarga de actualizar los datos del vuelo
+    */
+    public function actualizarDatos($pViaje)
+    {
+        echo "Luego, ingrese el destino del vuelo: ";
+        $dest = trim(fgets(STDIN));
+        echo "Ingrese la cantidad maxima de pasajeros del vuelo: ";
+        $max = trim(fgets(STDIN));
+        echo "Ingrese el importe del viaje: ";
+        $pImporte = trim(fgets(STDIN));
+        echo "Ingrese 'true'(Si el viaje es ida y vuelta), sino, ingrese 'false': ";
+        $pIYV = trim(fgets(STDIN));
+        echo "Ingrese 'Primera Clase' o 'Clase Turista': ";
+        $pClase = trim(fgets(STDIN));
+        echo "Ingrese el nombre de la aerolinea: ";
+        $pNombre = trim(fgets(STDIN));
+        echo "Ingrese la cantidad de escalas del vuelo: ";
+        $pEscalas = trim(fgets(STDIN));
+
+        
+        $this
+    }
 }

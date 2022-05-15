@@ -39,12 +39,13 @@ function crearPredeterminadoTerrestre()
 
 /**
  * Modulo que se encarga de decidir que viaje crear predeterminado
- * @return ViajeFeliz 
+ * @return ViajeFeliz
  */
-function crearViajePre(){
+function crearViajePre()
+{
     echo "\nIngrese 'Aereo' o 'Terrestre' según corresponda: ";
     $tipo = trim(fgets(STDIN));
-    if($tipo == "Aereo"){
+    if ($tipo == "Aereo") {
         $viaje1 = crearPredeterminadoAereo();
     } else {
         $viaje1 = crearPredeterminadoTerrestre();
@@ -54,12 +55,13 @@ function crearViajePre(){
 
 /**
  * Modulo que se encarga de decidir que viaje crear
- * @return ViajeFeliz 
+ * @return ViajeFeliz
  */
-function crearViaje(){
+function crearViaje()
+{
     echo "\nIngrese 'Aereo' o 'Terrestre' según corresponda: ";
     $tipo = trim(fgets(STDIN));
-    if($tipo == "Aereo"){
+    if ($tipo == "Aereo") {
         $viaje1 = crearVueloNuevo();
     } else {
         $viaje1 = crearTerrestreNuevo();
@@ -81,7 +83,7 @@ function crearVueloNuevo()
     $max = trim(fgets(STDIN));
     echo "Ingrese el importe del viaje: ";
     $pImporte = trim(fgets(STDIN));
-    echo "Ingrese 1(Si el viaje es ida y vuelta), sino, ingrese otro numero: ";
+    echo "Ingrese 'true'(Si el viaje es ida y vuelta), sino, ingrese 'false': ";
     $pIYV = trim(fgets(STDIN));
     echo "Ingrese 'Primera Clase' o 'Clase Turista': ";
     $pClase = trim(fgets(STDIN));
@@ -95,11 +97,9 @@ function crearVueloNuevo()
     $arregloPasajeros = [];
     $responsable = crearResponsable();
 
-    if ($pIYV == 1) {
-        $vuelo = new Aereo($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, true, $pNroVuelo, $pClase, $pNombre, $pEscalas);
-    } else {
-        $vuelo = new Aereo($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, false, $pNroVuelo, $pClase, $pNombre, $pEscalas);
-    }
+    
+    $vuelo = new Aereo($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, $pIYV, $pNroVuelo, $pClase, $pNombre, $pEscalas);
+   
 
     return $vuelo;
 }
@@ -118,7 +118,7 @@ function crearTerrestreNuevo()
     $max = trim(fgets(STDIN));
     echo "Ingrese el importe del viaje: ";
     $pImporte = trim(fgets(STDIN));
-    echo "Ingrese 1(Si el viaje es ida y vuelta), sino, ingrese otro numero: ";
+    echo "Ingrese 'true'(Si el viaje es ida y vuelta), sino, ingrese 'false': ";
     $pIYV = trim(fgets(STDIN));
     echo "Ingrese 'Coche Cama' o 'Semi Cama': ";
     $pClase = trim(fgets(STDIN));
@@ -126,12 +126,8 @@ function crearTerrestreNuevo()
     $arregloPasajeros = [];
     $responsable = crearResponsable();
 
-    if ($pIYV == 1) {
-        $terrestre = new Terrestre($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, true, $pClase);
-    } else {
-        $terrestre = new Terrestre($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, false, $pClase);
-    }
-
+    $terrestre = new Terrestre($cod, $dest, $max, $arregloPasajeros, $responsable, $pImporte, $pIYV, $pClase);
+    
     return $terrestre;
 }
 
@@ -301,6 +297,8 @@ function crearPasajero()
 }
 
 
+
+
 /**
  * PROGRAMA PRINCIPAL
  */
@@ -315,10 +313,9 @@ do {
     3. Vender pasajes.\n
     4. Modificar un pasajero del viaje.\n
     5. Mostrar los datos del viaje.\n
-    6. Modificar el destino del viaje.\n
-    7. Modificar la cantidad maxima de pasajeros.\n
-    8. Modificar el responsable del viaje. \n
-    9. Salir.\n
+    6. Modificar los datos del viaje.\n
+    7. Modificar el responsable del viaje. \n
+    8. Salir.\n
     Opcion: ";
     $opcion = trim(fgets(STDIN));
 
@@ -351,21 +348,14 @@ do {
             break;
         }
         case 6: {
-            echo "\nIngrese el nuevo destino del viaje: ";
-            $nuevoDest = trim(fgets(STDIN));
-            $viaje1->setDestino($nuevoDest);
+            $viaje1->actualizarDatos();
             break;
         }
-        case 7: {
-            $nuevoMax = verificarNuevoMax($viaje1);
-            $viaje1->setMaxPasajeros($nuevoMax);
-            break;
-        }
-        case 8:{
+        case 7:{
             modificarResponsable($viaje1);
             break;
         }
-        case 9: {
+        case 8: {
             echo "\nGracias por usar nuestro servicio!\n";
             $seguir = false;
             break;
