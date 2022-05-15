@@ -18,6 +18,7 @@ function crearPredeterminadoAereo()
     $colecPersonas[4] = new Pasajero("Matias", "Suarez", 2402353, 294565623);
     $responsable = new ResponsableV(145, 456789787, "Lionel", "Scaloni");
     $vueloP = new Aereo(123, "Qatar", 50, $colecPersonas, $responsable, 12500, true, 44756, "Primera Clase", "Qatar Airways", 0);
+    $vueloP->actualizarImporte();
     return $vueloP;
 }
 
@@ -34,6 +35,7 @@ function crearPredeterminadoTerrestre()
     $colecPersonas[4] = new Pasajero("Matias", "Suarez", 2402353, 294565623);
     $responsable = new ResponsableV(145, 456789787, "Lionel", "Scaloni");
     $viaje1T = new Terrestre(1234, "Rio de Janeiro", 45, $colecPersonas, $responsable, 10500, true, "Cama");
+    $viaje1T->actualizarImporte();
     return $viaje1T;
 }
 
@@ -50,6 +52,7 @@ function crearViajePre()
     } else {
         $viaje1 = crearPredeterminadoTerrestre();
     }
+    $viaje1->actualizarImporte();
     return $viaje1;
 }
 
@@ -322,12 +325,12 @@ do {
     switch ($opcion) {
         case 1:{
             $viaje1 = crearViaje();
-            $viaje1->actualizarImporte();
+            
             break;
         }
         case 2:{
             $viaje1 = crearViajePre();
-            $viaje1->actualizarImporte();
+            
             break;
         }
         case 3: {

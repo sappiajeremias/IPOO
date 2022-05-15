@@ -74,4 +74,29 @@ class Terrestre extends Viaje
         echo "\nEl importe final del pasaje es " . $importe ;
         $this->setImporte($importe);
     }
+
+    /**
+    * Modulo que se encarga de actualizar los datos del vuelo
+    * @param Terrestre $pViaje
+    */
+    public function actualizarDatos($pViaje)
+    {
+        echo "Luego, ingrese el destino del vuelo: ";
+        $dest = trim(fgets(STDIN));
+        echo "Ingrese la cantidad maxima de pasajeros del vuelo: ";
+        $max = trim(fgets(STDIN));
+        echo "Ingrese el importe del viaje: ";
+        $pImporte = trim(fgets(STDIN));
+        echo "Ingrese 'true'(Si el viaje es ida y vuelta), sino, ingrese 'false': ";
+        $pIYV = trim(fgets(STDIN));
+        echo "Ingrese 'Coche Cama' o 'Semi Cama': ";
+        $pComodidad = trim(fgets(STDIN));
+        
+        $this->setDestino($dest);
+        $this->setMaxPasajeros($max);
+        $this->actualizarImporte();
+        $this->setIdaYV($pIYV);
+        $this->setComodidad($pComodidad);
+        
+    }
 }

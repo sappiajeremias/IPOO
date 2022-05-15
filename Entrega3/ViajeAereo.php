@@ -121,6 +121,7 @@ class Aereo extends Viaje
 
     /**
     * Modulo que se encarga de actualizar los datos del vuelo
+    * @param Aereo $pViaje
     */
     public function actualizarDatos($pViaje)
     {
@@ -140,6 +141,13 @@ class Aereo extends Viaje
         $pEscalas = trim(fgets(STDIN));
 
         
-        $this
+        $this->setDestino($dest);
+        $this->setMaxPasajeros($max);
+        $this->actualizarImporte();
+        $this->setIdaYV($pIYV);
+        $this->setCategoria($pClase);
+        $this->setNombreAero($pNombre);
+        $this->setEscalas($pEscalas);
+
     }
 }
