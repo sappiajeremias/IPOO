@@ -6,6 +6,7 @@ class Empresa {
     private $idempresa;
     private $enombre;
     private $edireccion;
+	private $mensajeoperacion;
 
     public function __construct() {
         $this->idempresa = "";
@@ -32,6 +33,10 @@ class Empresa {
         return $this->edireccion;
     }
 
+	public function getMensajeOperacion(){
+		return $this->mensajeoperacion;
+	}
+
     
     public function setID($pID){
         $this->idempresa = $pID;
@@ -45,6 +50,9 @@ class Empresa {
         $this->edireccion = $pDireccion;
     }
 
+	public function setmensajeoperacion($pmensajeoperacion){
+		$this->mensajeoperacion=$pmensajeoperacion;
+	}
 
     /**
 	 * Recupera los datos de una empresa por su id
@@ -62,15 +70,12 @@ class Empresa {
 					$this->setNombre($row2['enombre']);
 					$this->setDireccion($row2['edireccion']);
 					$resp= true;
-				}				
-			
+				}						
 		 	}	else {
-		 			$this->setmensajeoperacion($base->getError());
-		 		
+		 			$this->setmensajeoperacion($base->getError());		 		
 			}
 		 }	else {
-		 		$this->setmensajeoperacion($base->getError());
-		 	
+		 		$this->setmensajeoperacion($base->getError());	 	
 		 }		
 		 return $resp;
 	}	
@@ -78,14 +83,14 @@ class Empresa {
 
 
     public function listar($condicion=""){
-	    $arregloPersona = null;
+	    $arregloempresa = null;
 		$base=new BaseDatos();
 		$consultaEmpresa="Select * from empresa ";
 		if ($condicion!=""){
 		    $consultaEmpresa=$consultaEmpresa.' where '.$condicion;
 		}
 		$consultaEmpresa.=" order by enombre ";
-		//echo $consultaEmpresa;
+		
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaEmpresa)){				
 				$arregloempresa= array();
@@ -99,16 +104,12 @@ class Empresa {
 					$empre->cargar($id,$nombre,$direccion);
 					array_push($arregloempresa,$empre);
 	
-				}
-				
-			
+				}							
 		 	}	else {
-		 			$this->setmensajeoperacion($base->getError());
-		 		
+		 			$this->setmensajeoperacion($base->getError());		 		
 			}
 		 }	else {
-		 		$this->setmensajeoperacion($base->getError());
-		 	
+		 		$this->setmensajeoperacion($base->getError());		 	
 		 }	
 		 return $arregloempresa;
 	}	
@@ -161,17 +162,16 @@ class Empresa {
 				if($base->Ejecutar($consultaBorra)){
 				    $resp=  true;
 				}else{
-						$this->setmensajeoperacion($base->getError());
+					$this->setmensajeoperacion($base->getError());
 				}
 		}else{
-				$this->setmensajeoperacion($base->getError());
-			
+				$this->setmensajeoperacion($base->getError());			
 		}
 		return $resp; 
 	}
 
 
     public function __toString(){
-        return "\nID EMPRESA: " . $this->getID(). ".\nNOMBRE: " . $this->getNombre() . ".\nDIRECCION: " . $this->getDireccion() . "\n";
+        return "\nID EMPRESA: " . $this->getID(). ".\nNOMBRE: " . $this->getNombre() . ".\nDIRECCION: " . $this->getDireccion() . ".\n";
     }
 }
