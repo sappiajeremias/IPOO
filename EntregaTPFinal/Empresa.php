@@ -38,7 +38,7 @@ class Empresa {
 	}
 
     
-    public function setID($pID){
+    public function setIdEmpresa($pID){
         $this->idempresa = $pID;
     }
 
@@ -96,7 +96,7 @@ class Empresa {
 				$arregloempresa= array();
 				while($row2=$base->Registro()){
 					
-					$id=$row2['idempres'];
+					$id=$row2['idempresa'];
 					$nombre=$row2['enombre'];
 					$direccion=$row2['edireccion'];
 				
