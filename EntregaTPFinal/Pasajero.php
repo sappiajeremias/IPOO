@@ -143,7 +143,7 @@ class Pasajero {
 		$base=new BaseDatos();
 		$resp= false;
 		$consultaInsertar="INSERT INTO pasajero(rdocumento, pnombre, papellido, ptelefono, idviaje) 
-				VALUES (".$this->getDocumento().",'".$this->getNombre()."','".$this->getApellido()."','".$this->getTelefono()."','".$this->getIdViaje()."')";
+				VALUES (".$this->getDocumento().",'".$this->getNombre()."','".$this->getApellido()."',".$this->getTelefono().",".$this->getIdViaje().")";
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaInsertar)){
 			    $resp=  true;
@@ -161,7 +161,7 @@ class Pasajero {
     public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="UPDATE pasajero SET pnombre='".$this->getNombre()."',papellido='".$this->getApellido()."',ptelefono='".$this->getTelefono()."',idviaje='".$this->getIdViaje()."' WHERE rdocumento=". $this->getDocumento();
+		$consultaModifica="UPDATE pasajero SET pnombre='".$this->getNombre()."',papellido='".$this->getApellido()."',ptelefono=".$this->getTelefono().",idviaje=".$this->getIdViaje()." WHERE rdocumento=". $this->getDocumento();
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;

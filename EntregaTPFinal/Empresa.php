@@ -9,13 +9,13 @@ class Empresa {
 	private $mensajeoperacion;
 
     public function __construct() {
-        $this->idempresa = "";
+        $this->idempresa = 0;
         $this->enombre = "";
         $this->edireccion = "";
     }
 
-    public function cargar ($pID, $pNombre, $pDireccion) {
-        $this->setIdEmpresa($pID);
+    public function cargar ($pID,$pNombre, $pDireccion) {
+		$this->setIdempresa($pID);
         $this->setNombre($pNombre);
         $this->setDireccion($pDireccion);
     }
@@ -118,13 +118,15 @@ class Empresa {
     public function insertar(){
 		$base=new BaseDatos();
 		$resp= false;
-		$consultaInsertar="INSERT INTO empresa(idempresa, enombre, edireccion) 
-				VALUES (".$this->getID().",'".$this->getNombre()."','".$this->getDireccion()."')";
+		$consultaInsertar="INSERT INTO empresa(enombre, edireccion) 
+				VALUES ('".$this->getNombre()."','".$this->getDireccion()."')";
 		
 		if($base->Iniciar()){
 
-			if($base->Ejecutar($consultaInsertar)){
+			if($id = $base->devuelveIDInsercion($consultaInsertar)){
+                $this->setIdEmpresa($id);
 			    $resp=  true;
+
 			}	else {
 				$this->setmensajeoperacion($base->getError());	
 			}

@@ -10,14 +10,14 @@ class Responsable{
     private $mensajeoperacion;
 
     public function __construct(){
-        $this->rnumeroempleado = "";
+        $this->rnumeroempleado = 0;
         $this->rnumerolicencia ="";
         $this->rnombre="";
         $this->rapellido="";
     }
 
-    public function cargar ($pnumE, $pnumL, $pnomb, $pape){
-        $this->setNumeroE($pnumE);
+    public function cargar ($pnumE,$pnumL, $pnomb, $pape){
+		$this->setNumeroE($pnumE);
         $this->setNumeroL($pnumL);
         $this->setNombre($pnomb);
         $this->setApellido($pape);
@@ -131,10 +131,11 @@ class Responsable{
     public function insertar(){
 		$base=new BaseDatos();
 		$resp= false;
-		$consultaInsertar="INSERT INTO responsable(rnumeroempleado, rnumerolicencia, rnombre, rapellido) 
-				VALUES (".$this->getNumeroE().",'".$this->getNumeroL()."','".$this->getNombre()."','".$this->getApellido()."')";
+		$consultaInsertar="INSERT INTO responsable(rnumerolicencia, rnombre, rapellido) 
+				VALUES (".$this->getNumeroL().",'".$this->getNombre()."','".$this->getApellido()."')";
 		if($base->Iniciar()){
-			if($base->Ejecutar($consultaInsertar)){
+			if($id = $base->devuelveIDInsercion($consultaInsertar)){
+                $this->setNumeroE($id);
 			    $resp=  true;
 			}	else {
 				$this->setmensajeoperacion($base->getError());	
@@ -150,7 +151,7 @@ class Responsable{
     public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="UPDATE responsable SET rnumerolicencia='".$this->getNumeroL()."',rnombre='".$this->getNombre()."',rapellido='".$this->getApellido()."' WHERE rnumeroempleado=". $this->getNumeroE();
+		$consultaModifica="UPDATE responsable SET rnumerolicencia=".$this->getNumeroL().",rnombre='".$this->getNombre()."',rapellido='".$this->getApellido()."' WHERE rnumeroempleado=". $this->getNumeroE();
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;

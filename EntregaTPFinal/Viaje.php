@@ -18,7 +18,7 @@ class Viaje{
     private $mensajeoperacion;
 
     public function __construct(){
-        $this->idviaje="";
+        $this->idviaje=0;
         $this->vdestino="";
         $this->vcantmaxpasajeros="";
         $this->colpasajeros= [];
@@ -29,8 +29,8 @@ class Viaje{
         $this->idempresa="";
     }
 
-    public function cargar($pid, $pdestino, $pcantidad, $pimporte, $pasiento, $pidayvuelta, $presp, $pidE){
-        $this->setID($pid);
+    public function cargar($pIdViaje,$pdestino, $pcantidad, $pimporte, $pasiento, $pidayvuelta, $presp, $pidE){
+        $this->setID($pIdViaje);
         $this->setDestino($pdestino);
         $this->setCantidad($pcantidad);
         $this->setImporte($pimporte);
@@ -77,7 +77,7 @@ class Viaje{
     }
 
     public function getIdEmpresa(){
-        return $this->idviaje;
+        return $this->idempresa;
     }
 
     public function setID($pid){
@@ -117,7 +117,7 @@ class Viaje{
     }
 
     public function setIdEmpresa($pid){
-        $this->idEmpresa = $pid;
+        $this->idempresa = $pid;
     }
 
 
@@ -197,10 +197,14 @@ class Viaje{
     public function insertar(){
 		$base=new BaseDatos();
 		$resp= false;
-		$consultaInsertar="INSERT INTO viaje(idviaje, vdestino, vcantmaxpasajeros, vimporte, tipoAsiento, idayvuelta, idempresa, rnumeroempleado) 
-				VALUES (".$this->getID().",'".$this->getDestino()."','".$this->getCantidad()."','".$this->getImporte()."','".$this->getAsiento()."','".$this->getIdaYVuelta()."','".$this->getIdEmpresa()."','".$this->getResponsable()."')";
-		if($base->Iniciar()){
-			if($base->Ejecutar($consultaInsertar)){
+        /*$consultaInsertar = "INSERT INTO viaje(vdestino, vcantmaxpasajeros,  idempresa, rnumeroempleado, vimporte, tipoAsiento, idayvuelta) 
+                VALUES ('" . $this->getDestino()."'," . $this->getMaxPasajeros() . "," . $IdEmpresa . 
+                    "," . $this->getObjResponsable()->getNumEmpleado() . "," . $this->getImporte() . ",'" . $this->getAsiento() . "'," . $this->getIdaYVuelta() . ")";*/
+		$consultaInsertar="INSERT INTO viaje(vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado, vimporte, tipoAsiento, idayvuelta) 
+				VALUES ('".$this->getDestino()."',".$this->getCantidad()."," . $this->getIdEmpresa(). ",".$this->getResponsable()->getNumeroE(). ",". $this->getImporte(). ",'".$this->getAsiento(). "','".$this->getIdaYVuelta(). "')";
+                if($base->Iniciar()){
+			if($id = $base->devuelveIDInsercion($consultaInsertar)){
+                $this->setID($id);
 			    $resp=  true;
 			}	else {
 				$this->setmensajeoperacion($base->getError());	
@@ -216,7 +220,7 @@ class Viaje{
     public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="UPDATE viaje SET vdestino='".$this->getDestino()."',vcantmaxpasajeros='".$this->getCantidad()."',idempresa='".$this->getIdEmpresa()."',rnumeroempleado='".$this->getResponsable()."',vimporte='".$this->getImporte()."',tipoAsiento='".$this->getAsiento()."',idayvuelta='".$this->getIdaYVuelta()."' WHERE idviaje=". $this->getID();
+		$consultaModifica="UPDATE viaje SET vdestino='".$this->getDestino()."',vimporte=".$this->getImporte()." WHERE idviaje=". $this->getID();
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;
