@@ -197,9 +197,6 @@ class Viaje{
     public function insertar(){
 		$base=new BaseDatos();
 		$resp= false;
-        /*$consultaInsertar = "INSERT INTO viaje(vdestino, vcantmaxpasajeros,  idempresa, rnumeroempleado, vimporte, tipoAsiento, idayvuelta) 
-                VALUES ('" . $this->getDestino()."'," . $this->getMaxPasajeros() . "," . $IdEmpresa . 
-                    "," . $this->getObjResponsable()->getNumEmpleado() . "," . $this->getImporte() . ",'" . $this->getAsiento() . "'," . $this->getIdaYVuelta() . ")";*/
 		$consultaInsertar="INSERT INTO viaje(vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado, vimporte, tipoAsiento, idayvuelta) 
 				VALUES ('".$this->getDestino()."',".$this->getCantidad()."," . $this->getIdEmpresa(). ",".$this->getResponsable()->getNumeroE(). ",". $this->getImporte(). ",'".$this->getAsiento(). "','".$this->getIdaYVuelta(). "')";
                 if($base->Iniciar()){
