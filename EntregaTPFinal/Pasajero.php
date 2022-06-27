@@ -23,7 +23,7 @@ class Pasajero {
         $this->setNombre($pnom);
         $this->setApellido($pape);
         $this->setTelefono($ptel);
-		$this->setIdViaje($pID);
+		$this->setIdViaje($pid);
     }
 
     public function getDocumento(){

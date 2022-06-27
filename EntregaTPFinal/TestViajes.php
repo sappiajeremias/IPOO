@@ -2,7 +2,7 @@
 
 include_once "Viaje.php";
 include_once "Empresa.php";
-
+include_once "Pasajero.php";
 
 //MENU
 $emp = new Empresa();
@@ -269,3 +269,4 @@ function mostrarViaje($viaje)
     };
 }
 
+?>
