@@ -163,15 +163,14 @@ class Viaje{
 		$base=new BaseDatos();
 		$consultaViajes="Select * from viaje ";
 		if ($condicion!=""){
-		    $consultaViajes=$consultaViajes.' where '.$condicion;
+		    $consultaViajes=$consultaViajes.'where '.$condicion;
 		}
-		$consultaViajes.=" order by idviaje ";
-		
+		$consultaViajes.=" order by idviaje";
 		if($base->Iniciar()){
-            
-			if($base->Ejecutar($consultaViajes)){				
+			if($base->Ejecutar($consultaViajes)){		
 				$arregloviajes= array();
-				while($row2=$base->Registro()){
+                
+				while($row2 = $base->Registro()){
 					
 					$idviaje=$row2['idviaje'];
 					$destino=$row2['vdestino'];
@@ -254,10 +253,11 @@ class Viaje{
 
 
     public function __toString(){
+        $pas = new Pasajero();
         $cadena = "";
-        $colpasajeros = $this->getColeccion();
-        foreach($colpasajeros as $pasajero){
-            $cadena .= "\n" . $pasajero;
+        $colpasajeros = $pas->listar('idviaje=' . $this->getID());
+        foreach($colpasajeros as $p){
+            $cadena .= "\n" . $p;
         }
         return "\nID Viaje: " . $this->getID() . ".\nEmpresa: " . $this->getIdEmpresa(). ".\nDestino: " . $this->getDestino() . ".\nCantidad Maxima: " . $this->getCantidad() . ".\nImporte: " . $this->getImporte() . ".\nTipo de asiento: " . $this->getAsiento() . ".\nIda y Vuelta: " . $this->getIdaYVuelta() . ".\nResponsable: " . $this->getResponsable() . ".\nPasajeros: \n" . $cadena;
     }

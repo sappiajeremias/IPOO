@@ -143,6 +143,7 @@ class Pasajero {
     public function insertar(){
 		$base=new BaseDatos();
 		$resp= false;
+		
 		$consultaInsertar="INSERT INTO pasajero(rdocumento, pnombre, papellido, ptelefono, idviaje) 
 				VALUES (".$this->getDocumento().",'".$this->getNombre()."','".$this->getApellido()."',".$this->getTelefono()."," . $this->getIdViaje()->getID() . ")";
 		if($base->Iniciar()){

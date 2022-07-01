@@ -53,7 +53,11 @@ while ($seguir) {
         }
         case 7: {
             //CREACION DE VIAJE
-            crearViaje($viaje, $responsable, $emp);
+            if (verifEmp() && verifResp()) {
+                crearViaje($viaje);
+            } else {
+                echo("\nEl viaje no se puede crear porque no existe la empresa o el responsable.");
+            }
             break;
         }
         case 8: {
@@ -68,7 +72,11 @@ while ($seguir) {
         }
         case 10: {
             //CREACION DE PASAJERO
-            crearPasajero($pas, $viaje);
+            if (verifVia()) {
+                crearPasajero($pas);
+            } else {
+                echo ("\nEl pasajero no se pudo cargar porque no existe un viaje.");
+            }   
             break;
         }
         case 11: {
@@ -119,6 +127,35 @@ while ($seguir) {
     }
 }
 
+function verifEmp(){
+    $emp = new Empresa();
+    $emp = $emp->listar();
+    if($emp==null){
+        return false;
+    } else{
+        return true;
+    }
+}
+
+function verifResp(){
+    $res = new Responsable();
+    $res = $res->listar();
+    if($res==null){
+        return false;
+    } else{
+        return true;
+    }
+}
+
+function verifVia(){
+    $via = new Viaje();
+    $via = $via->listar();
+    if($via==null){
+        return false;
+    } else{
+        return true;
+    }
+}
 
 function crearEmpresa($emp)
 {
@@ -155,6 +192,9 @@ function modificarEmpresa($emp)
 
 function eliminarEmpresa($emp)
 {
+    echo("\nIngrese el id de la empresa a eliminar: ");
+    $pID = trim(fgets(STDIN));
+    $emp->buscar($pID);
     $respuesta = $emp->eliminar();
     if ($respuesta==true) {
         echo("\nLa eliminacion fue realizada correctamente.");
@@ -210,6 +250,9 @@ function modificarResponsable($responsable)
 
 function eliminarResponsable($responsable)
 {
+    echo("\nPor favor ingrese el numero de empleado del responsable a eliminar: ");
+    $pNro = trim(fgets(STDIN));
+    $responsable->buscar($pNro);
     $respuesta = $responsable->eliminar();
     if ($respuesta==true) {
         echo("\nLa eliminacion fue realizada correctamente.");
@@ -229,7 +272,7 @@ function mostrarResponsable($responsable)
     };
 }
 
-function crearViaje($viaje, $responsable, $empresa)
+function crearViaje($viaje)
 {
     echo("\nIngrese el destino del viaje: ");
     $dest = trim(fgets(STDIN));
@@ -237,10 +280,10 @@ function crearViaje($viaje, $responsable, $empresa)
     $max = trim(fgets(STDIN));
     echo("\nIngrese el id de la empresa: ");
     $idEmp = trim(fgets(STDIN));
-    $empresa = buscarEmpresaAux($idEmp, $empresa);
+    $empresa = buscarEmpresaAux($idEmp);
     echo("\nIngrese el numero del empleado a asignar: ");
     $numEmp = trim(fgets(STDIN));
-    $empleado = buscarRespAux($numEmp, $responsable);
+    $empleado = buscarRespAux($numEmp);
     echo("\nIngrese el importe del viaje: ");
     $import = trim(fgets(STDIN));
     echo("\nIngrese el tipo de asiento del viaje: ");
@@ -259,14 +302,17 @@ function crearViaje($viaje, $responsable, $empresa)
     return $respuesta;
 }
 
-function buscarRespAux($id, $responsable)
+function buscarRespAux($id)
 {
-    $nuevoResponsable = $responsable->listar('rnumeroempleado=' . $id);
+    $respon = new Responsable();
+    $nuevoResponsable = $respon->listar('rnumeroempleado=' . $id);
     return $nuevoResponsable[0];
 }
 
-function buscarEmpresaAux($id, $empresa){
-    $nuevaEmpresa = $empresa->listar('idempresa='. $id);
+function buscarEmpresaAux($id)
+{
+    $emp = new Empresa();
+    $nuevaEmpresa = $emp->listar('idempresa='. $id);
     return $nuevaEmpresa[0];
 }
 
@@ -285,6 +331,9 @@ function modificarViaje($viaje)
 
 function eliminarViaje($viaje)
 {
+    echo("\nIngrese el id del viaje a eliminar: ");
+    $pId = trim(fgets(STDIN));
+    $viaje->buscar($pId);
     $respuesta = $viaje->eliminar();
     if ($respuesta==true) {
         echo("\nLa eliminacion fue realizada correctamente.");
@@ -304,7 +353,7 @@ function mostrarViaje($viaje)
     };
 }
 
-function crearPasajero($pasajero, $viaje)
+function crearPasajero($pasajero)
 {
     echo("\nIngrese el documento del pasajero: ");
     $pDni = trim(fgets(STDIN));
@@ -316,7 +365,7 @@ function crearPasajero($pasajero, $viaje)
     $pTel = trim(fgets(STDIN));
     echo("\nIngrese el id del viaje: ");
     $pId = trim(fgets(STDIN));
-    $pViaje = buscarViajeAux($pId, $viaje);
+    $pViaje = buscarViajeAux($pId);
 
     
     $pasajero->cargar($pDni, $pNom, $pApe, $pTel, $pViaje);
@@ -330,9 +379,12 @@ function crearPasajero($pasajero, $viaje)
     return $respuesta;
 }
 
-function buscarViajeAux($id, $viaje){
-    $nuevoViaje = $viaje->listar('idviaje='. $id);
-    return $nuevoViaje[0];
+function buscarViajeAux($id)
+{
+    $viajeFinal = new Viaje();
+    $viajeFinal = $viaje->listar('idviaje='. $id)[0];
+    
+    return $viajeFinal;
 }
 
 function modificarPasajero($pasajero)
@@ -351,6 +403,9 @@ function modificarPasajero($pasajero)
 
 function eliminarPasajero($pasajero)
 {
+    echo("\nIngrese el documento del pasajero: ");
+    $pDni = trim(fgets(STDIN));
+    $pasajero->buscar($pDni);
     $respuesta = $pasajero->eliminar();
     if ($respuesta==true) {
         echo("\nLa eliminacion fue realizada correctamente.");
@@ -370,7 +425,8 @@ function mostrarPasajeroDni($pasajero)
     };
 }
 
-function mostrarPasajerosId($pasajero){
+function mostrarPasajerosId($pasajero)
+{
     echo("\nIngrese el id del viaje a listar: ");
     $id = trim(fgets(STDIN));
     $colPasa = $pasajero->listar('idviaje=' . $id);
@@ -378,5 +434,4 @@ function mostrarPasajerosId($pasajero){
         echo $pas;
         echo " ----------- ";
     };
-
 }
