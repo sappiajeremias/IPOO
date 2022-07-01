@@ -1,8 +1,10 @@
 <?php
 
 include_once "BaseDatos.php";
-include "Responsable.php";
-include "Pasajero.php";
+
+include_once "Responsable.php";
+include_once "Empresa.php";
+include_once "Pasajero.php";
 
 class Viaje{
 
@@ -140,8 +142,8 @@ class Viaje{
 					$this->setImporte($row2['vimporte']);
                     $this->setAsiento($row2['tipoAsiento']);
                     $this->setIdaYVuelta($row2['idayvuelta']);
-                    $this->setIdEmpresa($row2['idempresa']);
-                    $this->setResponsable($row2['rnumeroempleado']);
+                    $this->setIdEmpresa(buscarEmpresa($row2['idempresa']));
+                    $this->setResponsable(buscarResp($row2['rnumeroempleado']));
                     
 					$resp= true;
 				}						
@@ -163,9 +165,10 @@ class Viaje{
 		if ($condicion!=""){
 		    $consultaViajes=$consultaViajes.' where '.$condicion;
 		}
-		$consultaViajes.=" order by rapellido ";
+		$consultaViajes.=" order by idviaje ";
 		
 		if($base->Iniciar()){
+            
 			if($base->Ejecutar($consultaViajes)){				
 				$arregloviajes= array();
 				while($row2=$base->Registro()){
@@ -175,12 +178,13 @@ class Viaje{
 					$cantidad=$row2['vcantmaxpasajeros'];
                     $importe=$row2['vimporte'];
                     $asiento=$row2['tipoAsiento'];
-                    $idayvuelta = $row2['idayvuelta'];
-                    $empresa=$row2['idempresa'];
-                    $responsable=$row2['rnumeroempleado'];
+                    $idayvuelta=$row2['idayvuelta'];
+                    $empresa=$this->buscarEmpresa($row2['idempresa']);
+                    $responsable=$this->buscarResp($row2['rnumeroempleado']);
 				
 					$pViaje=new Viaje();
 					$pViaje->cargar($idviaje, $destino, $cantidad, $importe, $asiento, $idayvuelta, $responsable, $empresa);
+                    
 					array_push($arregloviajes,$pViaje);	
 				}							
 		 	}	else {
@@ -198,7 +202,7 @@ class Viaje{
 		$base=new BaseDatos();
 		$resp= false;
 		$consultaInsertar="INSERT INTO viaje(vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado, vimporte, tipoAsiento, idayvuelta) 
-				VALUES ('".$this->getDestino()."',".$this->getCantidad()."," . $this->getIdEmpresa(). ",".$this->getResponsable()->getNumeroE(). ",". $this->getImporte(). ",'".$this->getAsiento(). "','".$this->getIdaYVuelta(). "')";
+				VALUES ('".$this->getDestino()."',".$this->getCantidad()."," . $this->getIdEmpresa()->getID(). ",".$this->getResponsable()->getNumeroE(). ",". $this->getImporte(). ",'".$this->getAsiento(). "','".$this->getIdaYVuelta(). "')";
                 if($base->Iniciar()){
 			if($id = $base->devuelveIDInsercion($consultaInsertar)){
                 $this->setID($id);
@@ -255,6 +259,19 @@ class Viaje{
         foreach($colpasajeros as $pasajero){
             $cadena .= "\n" . $pasajero;
         }
-        return "\nID Viaje: " . $this->getID() . ".\nID Empresa: " . $this->getIdEmpresa(). ".\nDestino: " . $this->getDestino() . ".\nCantidad Maxima: " . $this->getCantidad() . ".\nImporte: " . $this->getImporte() . ".\nTipo de asiento: " . $this->getAsiento() . ".\nIda y Vuelta: " . $this->getIdaYVuelta() . ".\nResponsable: " . $this->getResponsable() . ".\nPasajeros: \n" . $cadena;
+        return "\nID Viaje: " . $this->getID() . ".\nEmpresa: " . $this->getIdEmpresa(). ".\nDestino: " . $this->getDestino() . ".\nCantidad Maxima: " . $this->getCantidad() . ".\nImporte: " . $this->getImporte() . ".\nTipo de asiento: " . $this->getAsiento() . ".\nIda y Vuelta: " . $this->getIdaYVuelta() . ".\nResponsable: " . $this->getResponsable() . ".\nPasajeros: \n" . $cadena;
+    }
+
+    private function buscarEmpresa($id){
+        $emp = new Empresa();
+        $arrEmp = $emp->listar('idempresa=' . $id);
+        return $arrEmp[0];
+    }
+
+    private function buscarResp ($numeroEmp){
+        $resp = new Responsable();
+        $arrResp = $resp->listar('rnumeroempleado='.$numeroEmp);
+        return $arrResp[0];
     }
 }
+

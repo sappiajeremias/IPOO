@@ -1,5 +1,6 @@
 <?php
 include_once "BaseDatos.php";
+include_once "Viaje.php";
 
 class Pasajero {
 
@@ -91,7 +92,7 @@ class Pasajero {
 					$this->setNombre($row2['pnombre']);
 					$this->setApellido($row2['papellido']);
 					$this->setTelefono($row2['ptelefono']);
-					$this->setIdViaje($row2['idviaje']);
+					$this->setIdViaje(buscarViaje($row2['idviaje']));
 					$resp= true;
 				}						
 		 	}	else {
@@ -122,7 +123,7 @@ class Pasajero {
 					$nombre=$row2['pnombre'];
 					$apellido=$row2['papellido'];
                     $telefono=$row2['ptelefono'];
-					$id = $row2['idviaje'];
+					$id = $this->buscarViaje($row2['idviaje']);
 				
 					$pasaje=new Pasajero();
 					$pasaje->cargar($dni,$nombre,$apellido, $telefono, $id);
@@ -143,7 +144,7 @@ class Pasajero {
 		$base=new BaseDatos();
 		$resp= false;
 		$consultaInsertar="INSERT INTO pasajero(rdocumento, pnombre, papellido, ptelefono, idviaje) 
-				VALUES (".$this->getDocumento().",'".$this->getNombre()."','".$this->getApellido()."',".$this->getTelefono().",".$this->getIdViaje().")";
+				VALUES (".$this->getDocumento().",'".$this->getNombre()."','".$this->getApellido()."',".$this->getTelefono()."," . $this->getIdViaje()->getID() . ")";
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaInsertar)){
 			    $resp=  true;
@@ -161,7 +162,7 @@ class Pasajero {
     public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="UPDATE pasajero SET pnombre='".$this->getNombre()."',papellido='".$this->getApellido()."',ptelefono=".$this->getTelefono().",idviaje=".$this->getIdViaje()." WHERE rdocumento=". $this->getDocumento();
+		$consultaModifica="UPDATE pasajero SET pnombre='".$this->getNombre()."',papellido='".$this->getApellido()."',ptelefono=".$this->getTelefono().",idviaje=".$this->getIdViaje()->getID()." WHERE rdocumento=". $this->getDocumento();
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;
@@ -195,6 +196,12 @@ class Pasajero {
 
 
     public function __toString(){
-        return "\nNombre y apellido: " . $this->getNombre() . " " . $this->getApellido() . ".\nDocumento: " . $this->getDocumento() . ".\nTelefono: " . $this->getTelefono() . ".\nID Viaje: " . $this->getIdViaje() . ".\n";
+        return "\nNombre y apellido: " . $this->getNombre() . " " . $this->getApellido() . ".\nDocumento: " . $this->getDocumento() . ".\nTelefono: " . $this->getTelefono() . ".\nID Viaje: " . $this->getIdViaje()->getID() . ".\n";
     }
+
+	private function buscarViaje($id){
+		$viaje = new Viaje();
+        $arr = $viaje->listar('idviaje='.$id);
+        return $arr[0];
+	}
 }
