@@ -15,8 +15,8 @@ class Viaje{
     private $vimporte;
     private $tipoAsiento;
     private $idayvuelta;
-    private $idempresa;
-    private $numeroempleado;
+    private $idempresa; // OBJETO EMPRESA
+    private $numeroempleado; // OBJETO RESPONSABLE
     private $mensajeoperacion;
 
     public function __construct(){
