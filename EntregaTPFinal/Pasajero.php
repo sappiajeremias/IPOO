@@ -92,7 +92,7 @@ class Pasajero {
 					$this->setNombre($row2['pnombre']);
 					$this->setApellido($row2['papellido']);
 					$this->setTelefono($row2['ptelefono']);
-					$this->setIdViaje(buscarViaje($row2['idviaje']));
+					$this->setIdViaje($this->buscarViaje($row2['idviaje']));
 					$resp= true;
 				}						
 		 	}	else {
@@ -163,7 +163,8 @@ class Pasajero {
     public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="UPDATE pasajero SET pnombre='".$this->getNombre()."',papellido='".$this->getApellido()."',ptelefono=".$this->getTelefono().",idviaje=".$this->getIdViaje()->getID()." WHERE rdocumento=". $this->getDocumento();
+		
+		$consultaModifica="UPDATE pasajero SET pnombre='".$this->getNombre()."',papellido='".$this->getApellido()."',ptelefono=".$this->getTelefono().",idviaje=".$this->getIdViaje()->getID() ." WHERE rdocumento=". $this->getDocumento();
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;

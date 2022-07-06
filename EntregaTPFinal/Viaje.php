@@ -1,7 +1,6 @@
 <?php
 
 include_once "BaseDatos.php";
-
 include_once "Responsable.php";
 include_once "Empresa.php";
 include_once "Pasajero.php";
@@ -131,7 +130,7 @@ class Viaje{
 	 */		
     public function Buscar($id){
 		$base=new BaseDatos();
-		$consultaViajes="Select * from viaje where idviaje=" . $id;
+		$consultaViajes="SELECT * FROM viaje WHERE idviaje=" . $id;
 		$resp= false;
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaViajes)){
@@ -142,8 +141,8 @@ class Viaje{
 					$this->setImporte($row2['vimporte']);
                     $this->setAsiento($row2['tipoAsiento']);
                     $this->setIdaYVuelta($row2['idayvuelta']);
-                    $this->setIdEmpresa(buscarEmpresa($row2['idempresa']));
-                    $this->setResponsable(buscarResp($row2['rnumeroempleado']));
+                    $this->setIdEmpresa($this->buscarEmpresa($row2['idempresa']));
+                    $this->setResponsable($this->buscarResp($row2['rnumeroempleado']));
                     
 					$resp= true;
 				}						
@@ -220,7 +219,7 @@ class Viaje{
     public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="UPDATE viaje SET vdestino='".$this->getDestino()."',vimporte=".$this->getImporte()." WHERE idviaje=". $this->getID();
+		$consultaModifica="UPDATE viaje SET vdestino='".$this->getDestino()."',vimporte=".$this->getImporte().",vcantmaxpasajeros=".$this->getCantidad().",idayvuelta='".$this->getIdaYVuelta()."',idempresa=".$this->getIdEmpresa()->getID().",rnumeroempleado=".$this->getResponsable()->getNumeroE()." WHERE idviaje=". $this->getID();
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;

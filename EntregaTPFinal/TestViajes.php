@@ -12,8 +12,6 @@ $responsable = new Responsable();
 $pas = new Pasajero();
 
 
-
-
 $seguir = true;
 
 while ($seguir) {
@@ -340,8 +338,8 @@ function modificarViaje()
     echo("\nSe modificara el destino y el importe del viaje a 'Misiones' y 12500 respectivamente al viaje con id 11.");
     $via = new Viaje();
     $via->buscar(11);
-    $via->setDestino("Misiones");
-    $via->setImporte(12500);
+    $via->setDestino("Salta");
+    $via->setImporte(10000);
     $respuesta = $via->modificar();
     if ($respuesta == true) {
         echo("\nLa modificacion fue realizada correctamente.");
@@ -437,7 +435,7 @@ function eliminarPasajero()
     $pDni = trim(fgets(STDIN));
     $pasajero = new Pasajero();
     $pasajero->buscar($pDni);
-    $pasajero->buscar($pDni);
+    
     $respuesta = $pasajero->eliminar();
     if ($respuesta==true) {
         echo("\nLa eliminacion fue realizada correctamente.");
